@@ -4,43 +4,67 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { LinkContainer } from 'react-router-bootstrap';
 
 function NavBar() {
-    return(
-        <>
-      <Navbar expand="lg" className="bg-body-tertiary">
-      <Container fluid>
-        <Navbar.Brand href="/">Learning Platform</Navbar.Brand>
+  return (
+    <Navbar
+      expand="lg"
+      bg="dark"
+      variant="dark"
+      sticky="top"
+      className="shadow-sm"
+    >
+      <Container>
+        <LinkContainer to="/">
+          <Navbar.Brand className="fw-bold">
+            📚 Learning Platform
+          </Navbar.Brand>
+        </LinkContainer>
+
         <Navbar.Toggle aria-controls="navbarScroll" />
+
         <Navbar.Collapse id="navbarScroll">
-          <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: '100px' }}
-            navbarScroll
-          >
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="#action2">Courses</Nav.Link>
+          <Nav className="me-auto">
+            <LinkContainer to="/">
+              <Nav.Link>Home</Nav.Link>
+            </LinkContainer>
+
+            <LinkContainer to="/courses">
+              <Nav.Link>Courses</Nav.Link>
+            </LinkContainer>
+
             <NavDropdown title="Account" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Login</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">Sign-up</NavDropdown.Item>
+              <LinkContainer to="/login">
+                <NavDropdown.Item>Login</NavDropdown.Item>
+              </LinkContainer>
+
+              <LinkContainer to="/signup">
+                <NavDropdown.Item>Sign Up</NavDropdown.Item>
+              </LinkContainer>
+
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">my list</NavDropdown.Item>
+
+              <LinkContainer to="/my-courses">
+                <NavDropdown.Item>My Courses</NavDropdown.Item>
+              </LinkContainer>
             </NavDropdown>
-    
           </Nav>
+
           <Form className="d-flex">
             <Form.Control
               type="search"
-              placeholder="Search"
+              placeholder="Search courses..."
               className="me-2"
-              aria-label="Search"
             />
-            <Button variant="outline-success">Search</Button>
+            <Button variant="outline-light">
+              Search
+            </Button>
           </Form>
         </Navbar.Collapse>
       </Container>
     </Navbar>
-        </>
-    );
+  );
 }
-export default NavBar
+
+export default NavBar;
