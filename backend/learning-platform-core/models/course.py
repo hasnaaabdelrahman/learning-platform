@@ -21,3 +21,6 @@ class Course(db.Model):
         self.price = price
         self.total_hours = total_hours
         self.rating = rating
+
+    def __repr__(self):
+        return f"<Course -> title: {self.title}, description: {self.description}>"

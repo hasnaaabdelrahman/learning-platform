@@ -20,3 +20,6 @@ class User(db.Model):
         self.password = hash_password(password)
         self.role = role
 
+    def __repr__(self):
+        return f"<User => first name: {self.first_name}, last name: {self.last_name} has role: {self.role}>"
+
