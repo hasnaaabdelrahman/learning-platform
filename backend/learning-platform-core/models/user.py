@@ -1,20 +1,22 @@
-import uuid
 from app import db
-
-
+from services.password_service import hash_password
 
 class User(db.Model):
 
-    id = db.Column(db.Integer , primary_key = True)
-    first_name = db.Column(db.String(10))
-    last_name = db.Column(db.String(10))
-    password = db.Column(db.String(50))
-    role = db.Column(db.String(10))
+    __tablename__ = "user"
 
-    def __init__(self , id , first_name , last_name , password , role):
-        self.id = str(uuid.uuid4())
+    id = db.Column(db.Integer , primary_key = True)
+    first_name = db.Column(db.String(10), nullable=False)
+    last_name = db.Column(db.String(10), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    role = db.Column(db.String(10), nullable=False)
+    enrollments = db.relationship("Enrollment" , backref = "user")
+    comments = db.relationship("Comment" , backref = "user")
+
+
+    def __init__(self , first_name , last_name , password , role):
         self.first_name = first_name
         self.last_name = last_name
-        self.password = password
+        self.password = hash_password(password)
         self.role = role
 

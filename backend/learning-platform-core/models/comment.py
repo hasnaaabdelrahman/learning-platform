@@ -1,11 +1,15 @@
-import uuid
+from app import db
 
-class Comment:
+class Comment(db.Model):
+
+    __tablename__ = "comment"
 
     id = db.Column(db.Integer , primary_key = True)
-    content = db.Column(db.String(50))
+    content = db.Column(db.Text , nullable = False)
 
-    def __init__(self , id , content):
-        self.id = str(uuid.uuid4())
+    user_id = db.Column(db.Integer , db.ForeignKey("user.id") , nullable = False) 
+    course_id = db.Column(db.Integer , db.ForeignKey("course.id") , nullable = False)
+
+    def __init__(self ,content):
         self.content = content
         

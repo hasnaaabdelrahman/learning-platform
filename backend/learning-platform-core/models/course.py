@@ -1,18 +1,21 @@
-import uuid
 from app import db
 
-class Course:
+class Course(db.Model):
+
+    __tablename__ = "course"
+
 
     id = db.Column(db.Integer , primary_key = True)
-    title = db.Column(db.String(50))
-    description = db.Column(db.String(200))
-    price = db.Column(db.Double(50))
-    total_hours = db.Column(db.Integer)
-    rating = db.Column(db.Integer)
+    title = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.Text , nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    total_hours = db.Column(db.Integer, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    enrollments = db.relationship("Enrollment" , backref = "course")
+    comments = db.relationship("Comment" , backref = "course")
 
 
-    def __init__(self , id , title , description , price , total_hours , rating):
-        self.id = str(uuid.uuid4())
+    def __init__(self , title , description , price , total_hours , rating):
         self.title = title
         self.description = description
         self.price = price
