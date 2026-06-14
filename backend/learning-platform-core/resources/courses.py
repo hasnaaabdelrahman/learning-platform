@@ -12,6 +12,7 @@ course_model = course_ns.model(
         "id":fields.Integer(),
         "title":fields.String(),
         "description": fields.String(),
+        "image_url":fields.String(),
         "price":fields.Float(),
         "total_hours":fields.Integer(),
         "rating":fields.Integer()
@@ -27,6 +28,7 @@ course_input_model = course_ns.model(
         "description": fields.String(required=True),
         "price": fields.Float(required=True),
         "total_hours": fields.Integer(required=True),
+        "image_url":fields.String(required=True),
         "rating": fields.Integer(required=True)
         
     }
@@ -50,6 +52,7 @@ class CoursesResource(Resource):
             description=data.get('description'),
             price=data.get('price'),
             total_hours=data.get('total_hours'),
+            image_url = data.get('image_url'),
             rating=data.get('rating')
         )
         db.session.add(new_course)
@@ -76,6 +79,8 @@ class CourseResource(Resource):
         course_to_update.price = data.get('price' , course_to_update.price)
         course_to_update.total_hours = data.get('total_hours' , course_to_update.total_hours)
         course_to_update.rating = data.get('rating', course_to_update.rating)
+        course_to_update.image_url = data.get('image_url' , course_to_update.image_url ),
+
         db.session.commit()
         return course_to_update, 200
 
