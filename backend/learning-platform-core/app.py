@@ -13,7 +13,7 @@ api.init_app(app)
 db.init_app(app)
 migrate.init_app(app , db)
 
-from routes.courses import *
+from resources.courses import *
 
 
 if __name__ == "__main__":
