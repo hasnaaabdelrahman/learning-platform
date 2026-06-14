@@ -15,10 +15,11 @@ migrate.init_app(app , db)
 
 from resources.courses import *
 from resources.comments import *
+from resources.users import *
 
 api.add_namespace(course_ns)
 api.add_namespace(comment_ns)
-
+api.add_namespace(user_ns)
 
 
 if __name__ == "__main__":
