@@ -1,29 +1,19 @@
 import os
-from flask import Flask
-from flask_restx import Api , Resource
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
-from extensions import db, migrate
-import models
-
+from flask import Flask , request
+from extensions import db, migrate,api
 from config import DevConfig
+from flask_restx import Resource , fields
 
 
 app = Flask(__name__)
+
 app.config.from_object(DevConfig)
 
-api= Api(app,doc='/docs')
-
-
+api.init_app(app)
 db.init_app(app)
 migrate.init_app(app , db)
 
-
-
-@api.route("/hello")
-class HelloResource(Resource):
-    def get(self):
-        return {"message":"hello"}
+from routes.courses import *
 
 
 if __name__ == "__main__":
