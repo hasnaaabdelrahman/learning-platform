@@ -14,6 +14,11 @@ db.init_app(app)
 migrate.init_app(app , db)
 
 from resources.courses import *
+from resources.comments import *
+
+api.add_namespace(course_ns)
+api.add_namespace(comment_ns)
+
 
 
 if __name__ == "__main__":

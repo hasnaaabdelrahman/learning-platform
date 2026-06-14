@@ -1,10 +1,13 @@
 from extensions import api,db
-from flask_restx import Resource , fields
+from flask_restx import Resource , fields , Namespace
 from flask import Flask , request
 from models import Course
 
+
+course_ns = Namespace("courses" , description="Course operations")
+
 # model seralizer
-course_model = api.model(
+course_model = course_ns.model(
     "Course",{
         "id":fields.Integer(),
         "title":fields.String(),
@@ -16,18 +19,32 @@ course_model = api.model(
     }
 )
 
+### validation ###
 
-@api.route("/courses")
+course_input_model = course_ns.model(
+    "CourseInput",{
+        "title": fields.String(required=True),
+        "description": fields.String(required=True),
+        "price": fields.Float(required=True),
+        "total_hours": fields.Integer(required=True),
+        "rating": fields.Integer(required=True)
+        
+    }
+)
+
+
+@course_ns.route("/")
 class CoursesResource(Resource):
-    @api.marshal_list_with(course_model)
+    @course_ns.marshal_list_with(course_model)
     def get(self):
         """get all courses"""
         return Course.query.all()
 
-    @api.marshal_with(course_model)
+    @course_ns.expect(course_input_model)
+    @course_ns.marshal_with(course_model)
     def post(self):
         """create course"""
-        data = request.get_json()
+        data = course_ns.payload
         new_course = Course(
             title=data.get('title'),
             description=data.get('description'),
@@ -41,18 +58,19 @@ class CoursesResource(Resource):
 
 
 
-@api.route("/course/<int:id>")
+@course_ns.route("/<int:id>")
 class CourseResource(Resource):
-    @api.marshal_with(course_model)
+    @course_ns.marshal_with(course_model)
     def get(self , id):
         """get course by id"""
         return Course.query.get_or_404(id)
 
-    @api.marshal_with(course_model)
+    @course_ns.expect(course_input_model)
+    @course_ns.marshal_with(course_model)
     def put(self , id):
         """update cousre by id"""
         course_to_update = Course.query.get_or_404(id)
-        data = request.get_json()
+        data = course_ns.payload
         course_to_update.title = data.get('title' ,  course_to_update.title )
         course_to_update.description = data.get('description' ,  course_to_update.description)
         course_to_update.price = data.get('price' , course_to_update.price)
@@ -62,7 +80,6 @@ class CourseResource(Resource):
         return course_to_update, 200
 
 
-    @api.marshal_with(course_model)
     def delete(self , id):
         """delete by id"""
         course_to_delete = Course.query.get_or_404(id)
