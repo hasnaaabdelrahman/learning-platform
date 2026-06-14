@@ -2,6 +2,8 @@ import os
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from extensions import db, migrate
+import models
 
 
 app = Flask(__name__)
@@ -10,14 +12,10 @@ app = Flask(__name__)
 
 app.config.from_object("config")
 
+db.init_app(app)
+migrate.init_app(app , db)
 
 
-db = SQLAlchemy(app)
-
-migrate = Migrate(app, db)
-
-with app.app_context():
-    db.create_all()
 
 @app.route("/")
 def sayHello():
