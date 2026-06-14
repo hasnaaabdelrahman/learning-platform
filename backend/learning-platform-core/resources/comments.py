@@ -23,7 +23,7 @@ comment_input_model = comment_ns.model(
     }
 )
 
-@comment_ns.route("/comments")
+@comment_ns.route("/")
 class CommentsResources(Resource):
     @comment_ns.marshal_list_with(comment_model)
     def get(self):
@@ -42,7 +42,7 @@ class CommentsResources(Resource):
         db.session.commit()
         return new_comment, 201
 
-@comment_ns.route("/comments/<int:id>")
+@comment_ns.route("/<int:id>")
 class CommentResource(Resource):
     @comment_ns.marshal_with(comment_model)
     def get(self , id):
